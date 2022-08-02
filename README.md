@@ -5,7 +5,7 @@ Gdb Adapter is the goframe orm adapter for Casbin.
 
 ## Installation
 
-    go get github.com/casbin/gorm-adapter/v1
+    go get github.com/casbin/gorm-adapter
 
 ## Simple Example
 
@@ -14,9 +14,10 @@ package main
 
 import (
 	"context"
-	"github.com/casbin/casbin/v2"
-	gdbadapter "github.com/jxo-me/gdbadapter"
+	"github.com/casbin/casbin"
+	_ "github.com/gogf/gf/contrib/drivers/mysql/v2"
 	"github.com/gogf/gf/v2/database/gdb"
+	gdbadapter "github.com/jxo-me/gdb-adapter"
 	_ "github.com/gogf/gf/contrib/drivers/mysql/v2"
 )
 
@@ -26,10 +27,10 @@ func main() {
 	// If it doesn't exist, the adapter will create it automatically.
 	ctx := context.Background()
 	a, _ := gdbadapter.NewAdapter(ctx, gdb.DefaultGroupName) // Your driver and data source.
-	e, _ := casbin.NewEnforcer("examples/rbac_model.conf", a)
+	e := casbin.NewEnforcer("examples/rbac_model.conf", a)
 
 	// Load the policy from DB.
-	e.LoadPolicy()
+	_ = e.LoadPolicy()
 
 	// Check the permission.
 	e.Enforce("alice", "data1", "read")
@@ -39,7 +40,7 @@ func main() {
 	// e.RemovePolicy(...)
 
 	// Save the policy back to DB.
-	e.SavePolicy()
+	_ = e.SavePolicy()
 }
 ```
 
