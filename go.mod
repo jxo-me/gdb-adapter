@@ -1,4 +1,4 @@
-module github.com/jxo-me/gdb-adapter/v1
+module github.com/casbin/gorm-adapter
 
 go 1.18
 
@@ -6,7 +6,7 @@ require (
 	github.com/casbin/casbin/v2 v2.51.2
 	github.com/gogf/gf/contrib/drivers/mysql/v2 v2.1.2
 	github.com/gogf/gf/v2 v2.1.2
-	github.com/stretchr/testify v1.7.1
+	github.com/stretchr/testify v1.8.0
 )
 
 require (
@@ -36,5 +36,5 @@ require (
 	golang.org/x/net v0.0.0-20211112202133-69e39bad7dc2 // indirect
 	golang.org/x/sys v0.0.0-20220412211240-33da011f77ad // indirect
 	golang.org/x/text v0.3.8-0.20211105212822-18b340fc7af2 // indirect
-	gopkg.in/yaml.v3 v3.0.0-20210107192922-496545a6307b // indirect
+	gopkg.in/yaml.v3 v3.0.1 // indirect
 )

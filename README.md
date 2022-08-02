@@ -15,7 +15,7 @@ package main
 import (
 	"context"
 	"github.com/casbin/casbin/v2"
-	gdbadapter "github.com/jxo-me/gdbadapter/v1"
+	gdbadapter "github.com/jxo-me/gdbadapter"
 	"github.com/gogf/gf/v2/database/gdb"
 	_ "github.com/gogf/gf/contrib/drivers/mysql/v2"
 )
