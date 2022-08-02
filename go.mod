@@ -1,4 +1,4 @@
-module github.com/casbin/gorm-adapter
+module github.com/jxo-me/gdb-adapter/v1
 
 go 1.18
 
