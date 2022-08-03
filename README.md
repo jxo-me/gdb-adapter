@@ -14,11 +14,10 @@ package main
 
 import (
 	"context"
-	"github.com/casbin/casbin"
+	"github.com/casbin/casbin/v2"
 	_ "github.com/gogf/gf/contrib/drivers/mysql/v2"
 	"github.com/gogf/gf/v2/database/gdb"
 	gdbadapter "github.com/jxo-me/gdb-adapter"
-	_ "github.com/gogf/gf/contrib/drivers/mysql/v2"
 )
 
 func main() {
@@ -27,7 +26,7 @@ func main() {
 	// If it doesn't exist, the adapter will create it automatically.
 	ctx := context.Background()
 	a, _ := gdbadapter.NewAdapter(ctx, gdb.DefaultGroupName) // Your driver and data source.
-	e := casbin.NewEnforcer("examples/rbac_model.conf", a)
+	e, _ := casbin.NewEnforcer("examples/rbac_model.conf", a)
 
 	// Load the policy from DB.
 	_ = e.LoadPolicy()
