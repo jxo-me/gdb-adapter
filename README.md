@@ -5,7 +5,7 @@ Gdb Adapter is the goframe orm adapter for Casbin.
 
 ## Installation
 
-    go get github.com/casbin/gorm-adapter
+    go get github.com/jxo-me/gdb-adapter
 
 ## Simple Example
 
