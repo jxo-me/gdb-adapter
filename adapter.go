@@ -387,7 +387,7 @@ func (a *Adapter) AddPolicies(sec string, ptype string, rules [][]string) error 
 
 // RemovePolicies removes multiple policy rules from the store.
 func (a *Adapter) RemovePolicies(sec string, ptype string, rules [][]string) error {
-	return a.db.Transaction(a.ctx, func(ctx context.Context, tx *gdb.TX) error {
+	return a.db.Transaction(a.ctx, func(ctx context.Context, tx gdb.TX) error {
 		for _, rule := range rules {
 			line := a.savePolicyLine(ptype, rule)
 			if err := a.rawDelete(tx, line); err != nil {
@@ -435,7 +435,7 @@ func (a *Adapter) RemoveFilteredPolicy(sec string, ptype string, fieldIndex int,
 	return err
 }
 
-func (a *Adapter) rawDelete(tx *gdb.TX, line CasbinRule) error {
+func (a *Adapter) rawDelete(tx gdb.TX, line CasbinRule) error {
 	db := tx.Model(a.tableName).Safe()
 	condition := gdb.Map{"p_type": line.PType}
 	if line.V0 != "" {
