@@ -3,10 +3,10 @@ module github.com/jxo-me/gdb-adapter
 go 1.18
 
 require (
-	github.com/casbin/casbin/v2 v2.60.0
-	github.com/gogf/gf/contrib/drivers/mysql/v2 v2.3.1
-	github.com/gogf/gf/v2 v2.3.1
-	github.com/stretchr/testify v1.8.1
+	github.com/casbin/casbin/v2 v2.71.1
+	github.com/gogf/gf/contrib/drivers/mysql/v2 v2.4.4
+	github.com/gogf/gf/v2 v2.4.4
+	github.com/stretchr/testify v1.8.4
 )
 
 require (

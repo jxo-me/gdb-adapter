@@ -2,6 +2,7 @@ package gdbadapter
 
 import (
 	"context"
+	"fmt"
 	"github.com/casbin/casbin/v2"
 	"github.com/casbin/casbin/v2/util"
 	_ "github.com/gogf/gf/contrib/drivers/mysql/v2"
@@ -92,6 +93,13 @@ func initPolicy(t *testing.T, a *Adapter) {
 	testGetPolicy(t, e, [][]string{{"alice", "data1", "read"}, {"bob", "data2", "write"}, {"data2_admin", "data2", "read"}, {"data2_admin", "data2", "write"}})
 }
 
+func cleanPolicy(ctx context.Context, a *Adapter) {
+	// Clear the current policy.
+	if a.tableName != "" {
+		_, _ = a.db.Exec(ctx, fmt.Sprintf("TRUNCATE TABLE %s", a.tableName))
+	}
+}
+
 func testSaveLoad(t *testing.T, a *Adapter) {
 	// Initialize some policy in DB.
 	initPolicy(t, a)
@@ -111,7 +119,18 @@ func initAdapter(t *testing.T, ctx context.Context, driverName string) *Adapter 
 	if err != nil {
 		panic(err)
 	}
-
+	listSql := []string{
+		fmt.Sprintf("INSERT INTO `%s` (`id`, `p_type`, `v0`, `v1`, `v2`, `v3`, `v4`, `v5`, `v6`, `v7`) VALUES ('1', 'p', 'alice', 'data1', 'read', '', '', '', '', '')", a.tableName),
+		fmt.Sprintf("INSERT INTO `%s` (`id`, `p_type`, `v0`, `v1`, `v2`, `v3`, `v4`, `v5`, `v6`, `v7`) VALUES ('2', 'p', 'bob', 'data2', 'write', '', '', '', '', '')", a.tableName),
+		fmt.Sprintf("INSERT INTO `%s` (`id`, `p_type`, `v0`, `v1`, `v2`, `v3`, `v4`, `v5`, `v6`, `v7`) VALUES ('3', 'p', 'data2_admin', 'data2', 'read', '', '', '', '', '')", a.tableName),
+		fmt.Sprintf("INSERT INTO `%s` (`id`, `p_type`, `v0`, `v1`, `v2`, `v3`, `v4`, `v5`, `v6`, `v7`) VALUES ('4', 'p', 'data2_admin', 'data2', 'write', '', '', '', '', '')", a.tableName),
+		fmt.Sprintf("INSERT INTO `%s` (`id`, `p_type`, `v0`, `v1`, `v2`, `v3`, `v4`, `v5`, `v6`, `v7`) VALUES ('5', 'g', 'alice', 'data2_admin', '', '', '', '', '', '')", a.tableName),
+		fmt.Sprintf("INSERT INTO `%s` (`id`, `p_type`, `v0`, `v1`, `v2`, `v3`, `v4`, `v5`, `v6`, `v7`) VALUES ('6', 'p', 'jack', 'data1', 'read', 'col3', 'col4', 'col5', 'col6', 'col7')", a.tableName),
+		fmt.Sprintf("INSERT INTO `%s` (`id`, `p_type`, `v0`, `v1`, `v2`, `v3`, `v4`, `v5`, `v6`, `v7`) VALUES ('7', 'p', 'jack2', 'data1', 'read', 'col3', 'col4', 'col5', 'col6', 'col7')", a.tableName),
+	}
+	for _, sql := range listSql {
+		_, _ = a.db.Exec(ctx, sql)
+	}
 	// Initialize some policy in DB.
 	initPolicy(t, a)
 	// Now the DB has policy, so we can provide a normal use case.
@@ -132,7 +151,7 @@ func TestNilField(t *testing.T) {
 
 	ok, err := e.AddPolicy("", "data1", "write")
 	assert.Nil(t, err)
-	e.SavePolicy()
+	_ = e.SavePolicy()
 	assert.Nil(t, e.LoadPolicy())
 
 	ok, err = e.Enforce("", "data1", "write")
@@ -253,6 +272,7 @@ func TestAdapters(t *testing.T) {
 	testUpdatePolicy(t, a)
 	testUpdatePolicies(t, a)
 	testUpdateFilteredPolicies(t, a)
+	cleanPolicy(ctx, a)
 }
 
 func TestAddPolicies(t *testing.T) {
@@ -279,6 +299,7 @@ func TestAddPolicies(t *testing.T) {
 		{"jack", "data1", "read"},
 		{"jack2", "data1", "read"},
 	})
+	cleanPolicy(ctx, a)
 }
 
 func TestAddPoliciesFullColumn(t *testing.T) {
@@ -304,4 +325,5 @@ func TestAddPoliciesFullColumn(t *testing.T) {
 		{"jack", "data1", "read", "col3", "col4", "col5", "col6", "col7"},
 		{"jack2", "data1", "read", "col3", "col4", "col5", "col6", "col7"},
 	})
+	cleanPolicy(ctx, a)
 }

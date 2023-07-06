@@ -12,7 +12,7 @@ import (
 )
 
 const (
-	defaultTableName = "sys_casbin_rule"
+	defaultTableName = "casbin_rule"
 	flushEvery       = 1000
 )
 
@@ -30,7 +30,7 @@ type CasbinRule struct {
 }
 
 func (CasbinRule) TableName() string {
-	return "sys_casbin_rule"
+	return "casbin_rule"
 }
 
 func (c *CasbinRule) queryString() (interface{}, []interface{}) {
@@ -151,6 +151,7 @@ func NewAdapter(ctx context.Context, groupName string) (*Adapter, error) {
 
 func (a *Adapter) open() error {
 	a.db = g.DB(a.dbGroupName)
+	a.tableName = fmt.Sprintf("%s%s", a.db.GetPrefix(), a.tableName)
 	return a.createTable()
 }
 

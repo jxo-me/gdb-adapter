@@ -1,5 +1,6 @@
 # 数据库连接配置
 database:
   default:
-    link:   "mysql:root:123456@tcp(test.com:3306)/casbin"
+    link:   "mysql:root:lebo2020@tcp(test.com:3306)/casbin"
+    prefix: "sys_"
     debug:  true
