@@ -2,6 +2,7 @@ package gdbadapter
 
 import (
 	"context"
+	"fmt"
 	"github.com/gogf/gf/v2/os/glog"
 	"sync/atomic"
 )
@@ -63,4 +64,8 @@ func (l *Logger) LogPolicy(policy map[string][][]string) {
 		data[k] = policy[k]
 	}
 	l.Log.Info(l.Ctx, data)
+}
+
+func (l *Logger) LogError(err error, msg ...string) {
+	l.Log.Errorf(l.Ctx, fmt.Sprintf("error: %s, msg: %s", err.Error(), msg))
 }
