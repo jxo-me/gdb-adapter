@@ -30,7 +30,7 @@ type CasbinRule struct {
 }
 
 func (CasbinRule) TableName() string {
-	return "casbin_rule"
+	return defaultTableName
 }
 
 func (c *CasbinRule) queryString() (interface{}, []interface{}) {
